@@ -16,8 +16,14 @@ struct ChunkReadResponse {
 struct HeartbeatResposne {
   1: double totalDiskSpace,
   2: double usedDiskSpace,
-  3: double freeDiskSpace 
-  3: map<i64, i64> chunkHandleToReadCount
+  3: double freeDiskSpace,
+  4: map<i64, i64> chunkHandleToReadCount
+}
+
+struct ChunkLocation {
+  1: i64 chunkHandle,
+  2: string chunkServerIP,
+  3: i32 chunkServerPort
 }
 
 
@@ -58,38 +64,3 @@ service ChunkService {
    */
   HeartbeatResposne heartbeat() 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
