@@ -3,12 +3,12 @@
  * at the very begining of the binary read chunk protocol.
  */
 struct ChunkReadRequest {
-  1: i64 chunkHandle,
+  1: byte chunkHandle,
   2: i32 offset = 0
 }
 
 struct ChunkReadResponse {
-  1: i64 chunkHandle,
+  1: byte chunkHandle,
   2: i32 offset = 0,
   3: string checksum // TODO: Is string is the right type for checksum?
 }
@@ -17,11 +17,11 @@ struct HeartbeatResposne {
   1: double totalDiskSpace,
   2: double usedDiskSpace,
   3: double freeDiskSpace,
-  4: map<i64, i64> chunkHandleToReadCount
+  4: map<byte, i64> chunkHandleToReadCount
 }
 
 struct ChunkLocation {
-  1: i64 chunkHandle,
+  1: byte chunkHandle,
   2: string chunkServerIP,
   3: i32 chunkServerPort
 }
@@ -32,7 +32,7 @@ struct NewChunkServerRequest {
    * File name to chunks, for example: 
    * - yosy.txt - 1,3,4
    */
-  1: map<string, list<i64>> fileNameToChunkHandles 
+  1: map<string, list<byte>> fileNameToChunkHandles 
 }
 
 service MasterService {
@@ -43,16 +43,18 @@ service MasterService {
   void newChunkServer(1: NewChunkServerRequest request),
 
   /*
-   * When a client wants to read a file, he asks the master for the location of the chunks
-   * The client should have: the file identifier, and offset.
-   * Because the client know the default chunk size, he can calculate the index.
+   * When a client wants to read a file, he asks the master for the location of the chunks.
+   * The parameters are:
+   *  fileIdentifier
+   *  length - how much the client wants to read in bytes
+   *  offset - from where to start in bytes
    */
-  list<ChunkLocation> getChunkLocations(1: string fileIdentifier, 2: i64 chunkIndex),
+  list<ChunkLocation> getChunkLocations(1: string fileIdentifier, 2: i64 length, 3: i64 offset),
 
   /* 
    * Returns the default chunk size (64MB..)
    */
-  i64 getDefaultChunkSize()
+  i32 getDefaultChunkSize()
 }
 
 

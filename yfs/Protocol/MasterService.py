@@ -28,11 +28,12 @@ class Iface:
     """
     pass
 
-  def getChunkLocations(self, fileIdentifier, chunkIndex):
+  def getChunkLocations(self, fileIdentifier, length, offset):
     """
     Parameters:
      - fileIdentifier
-     - chunkIndex
+     - length
+     - offset
     """
     pass
 
@@ -78,20 +79,22 @@ class Client(Iface):
     self._iprot.readMessageEnd()
     return
 
-  def getChunkLocations(self, fileIdentifier, chunkIndex):
+  def getChunkLocations(self, fileIdentifier, length, offset):
     """
     Parameters:
      - fileIdentifier
-     - chunkIndex
+     - length
+     - offset
     """
-    self.send_getChunkLocations(fileIdentifier, chunkIndex)
+    self.send_getChunkLocations(fileIdentifier, length, offset)
     return self.recv_getChunkLocations()
 
-  def send_getChunkLocations(self, fileIdentifier, chunkIndex):
+  def send_getChunkLocations(self, fileIdentifier, length, offset):
     self._oprot.writeMessageBegin('getChunkLocations', TMessageType.CALL, self._seqid)
     args = getChunkLocations_args()
     args.fileIdentifier = fileIdentifier
-    args.chunkIndex = chunkIndex
+    args.length = length
+    args.offset = offset
     args.write(self._oprot)
     self._oprot.writeMessageEnd()
     self._oprot.trans.flush()
@@ -175,7 +178,7 @@ class Processor(Iface, TProcessor):
     args.read(iprot)
     iprot.readMessageEnd()
     result = getChunkLocations_result()
-    result.success = self._handler.getChunkLocations(args.fileIdentifier, args.chunkIndex)
+    result.success = self._handler.getChunkLocations(args.fileIdentifier, args.length, args.offset)
     oprot.writeMessageBegin("getChunkLocations", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
@@ -302,18 +305,21 @@ class getChunkLocations_args:
   """
   Attributes:
    - fileIdentifier
-   - chunkIndex
+   - length
+   - offset
   """
 
   thrift_spec = (
     None, # 0
     (1, TType.STRING, 'fileIdentifier', None, None, ), # 1
-    (2, TType.I64, 'chunkIndex', None, None, ), # 2
+    (2, TType.I64, 'length', None, None, ), # 2
+    (3, TType.I64, 'offset', None, None, ), # 3
   )
 
-  def __init__(self, fileIdentifier=None, chunkIndex=None,):
+  def __init__(self, fileIdentifier=None, length=None, offset=None,):
     self.fileIdentifier = fileIdentifier
-    self.chunkIndex = chunkIndex
+    self.length = length
+    self.offset = offset
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -331,7 +337,12 @@ class getChunkLocations_args:
           iprot.skip(ftype)
       elif fid == 2:
         if ftype == TType.I64:
-          self.chunkIndex = iprot.readI64();
+          self.length = iprot.readI64();
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.I64:
+          self.offset = iprot.readI64();
         else:
           iprot.skip(ftype)
       else:
@@ -348,9 +359,13 @@ class getChunkLocations_args:
       oprot.writeFieldBegin('fileIdentifier', TType.STRING, 1)
       oprot.writeString(self.fileIdentifier)
       oprot.writeFieldEnd()
-    if self.chunkIndex is not None:
-      oprot.writeFieldBegin('chunkIndex', TType.I64, 2)
-      oprot.writeI64(self.chunkIndex)
+    if self.length is not None:
+      oprot.writeFieldBegin('length', TType.I64, 2)
+      oprot.writeI64(self.length)
+      oprot.writeFieldEnd()
+    if self.offset is not None:
+      oprot.writeFieldBegin('offset', TType.I64, 3)
+      oprot.writeI64(self.offset)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -487,7 +502,7 @@ class getDefaultChunkSize_result:
   """
 
   thrift_spec = (
-    (0, TType.I64, 'success', None, None, ), # 0
+    (0, TType.I32, 'success', None, None, ), # 0
   )
 
   def __init__(self, success=None,):
@@ -503,8 +518,8 @@ class getDefaultChunkSize_result:
       if ftype == TType.STOP:
         break
       if fid == 0:
-        if ftype == TType.I64:
-          self.success = iprot.readI64();
+        if ftype == TType.I32:
+          self.success = iprot.readI32();
         else:
           iprot.skip(ftype)
       else:
@@ -518,8 +533,8 @@ class getDefaultChunkSize_result:
       return
     oprot.writeStructBegin('getDefaultChunkSize_result')
     if self.success is not None:
-      oprot.writeFieldBegin('success', TType.I64, 0)
-      oprot.writeI64(self.success)
+      oprot.writeFieldBegin('success', TType.I32, 0)
+      oprot.writeI32(self.success)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()

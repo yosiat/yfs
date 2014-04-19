@@ -29,7 +29,7 @@ class ChunkReadRequest:
 
   thrift_spec = (
     None, # 0
-    (1, TType.I64, 'chunkHandle', None, None, ), # 1
+    (1, TType.BYTE, 'chunkHandle', None, None, ), # 1
     (2, TType.I32, 'offset', None, 0, ), # 2
   )
 
@@ -47,8 +47,8 @@ class ChunkReadRequest:
       if ftype == TType.STOP:
         break
       if fid == 1:
-        if ftype == TType.I64:
-          self.chunkHandle = iprot.readI64();
+        if ftype == TType.BYTE:
+          self.chunkHandle = iprot.readByte();
         else:
           iprot.skip(ftype)
       elif fid == 2:
@@ -67,8 +67,8 @@ class ChunkReadRequest:
       return
     oprot.writeStructBegin('ChunkReadRequest')
     if self.chunkHandle is not None:
-      oprot.writeFieldBegin('chunkHandle', TType.I64, 1)
-      oprot.writeI64(self.chunkHandle)
+      oprot.writeFieldBegin('chunkHandle', TType.BYTE, 1)
+      oprot.writeByte(self.chunkHandle)
       oprot.writeFieldEnd()
     if self.offset is not None:
       oprot.writeFieldBegin('offset', TType.I32, 2)
@@ -102,7 +102,7 @@ class ChunkReadResponse:
 
   thrift_spec = (
     None, # 0
-    (1, TType.I64, 'chunkHandle', None, None, ), # 1
+    (1, TType.BYTE, 'chunkHandle', None, None, ), # 1
     (2, TType.I32, 'offset', None, 0, ), # 2
     (3, TType.STRING, 'checksum', None, None, ), # 3
   )
@@ -122,8 +122,8 @@ class ChunkReadResponse:
       if ftype == TType.STOP:
         break
       if fid == 1:
-        if ftype == TType.I64:
-          self.chunkHandle = iprot.readI64();
+        if ftype == TType.BYTE:
+          self.chunkHandle = iprot.readByte();
         else:
           iprot.skip(ftype)
       elif fid == 2:
@@ -147,8 +147,8 @@ class ChunkReadResponse:
       return
     oprot.writeStructBegin('ChunkReadResponse')
     if self.chunkHandle is not None:
-      oprot.writeFieldBegin('chunkHandle', TType.I64, 1)
-      oprot.writeI64(self.chunkHandle)
+      oprot.writeFieldBegin('chunkHandle', TType.BYTE, 1)
+      oprot.writeByte(self.chunkHandle)
       oprot.writeFieldEnd()
     if self.offset is not None:
       oprot.writeFieldBegin('offset', TType.I32, 2)
@@ -190,7 +190,7 @@ class HeartbeatResposne:
     (1, TType.DOUBLE, 'totalDiskSpace', None, None, ), # 1
     (2, TType.DOUBLE, 'usedDiskSpace', None, None, ), # 2
     (3, TType.DOUBLE, 'freeDiskSpace', None, None, ), # 3
-    (4, TType.MAP, 'chunkHandleToReadCount', (TType.I64,None,TType.I64,None), None, ), # 4
+    (4, TType.MAP, 'chunkHandleToReadCount', (TType.BYTE,None,TType.I64,None), None, ), # 4
   )
 
   def __init__(self, totalDiskSpace=None, usedDiskSpace=None, freeDiskSpace=None, chunkHandleToReadCount=None,):
@@ -228,7 +228,7 @@ class HeartbeatResposne:
           self.chunkHandleToReadCount = {}
           (_ktype1, _vtype2, _size0 ) = iprot.readMapBegin()
           for _i4 in xrange(_size0):
-            _key5 = iprot.readI64();
+            _key5 = iprot.readByte();
             _val6 = iprot.readI64();
             self.chunkHandleToReadCount[_key5] = _val6
           iprot.readMapEnd()
@@ -258,9 +258,9 @@ class HeartbeatResposne:
       oprot.writeFieldEnd()
     if self.chunkHandleToReadCount is not None:
       oprot.writeFieldBegin('chunkHandleToReadCount', TType.MAP, 4)
-      oprot.writeMapBegin(TType.I64, TType.I64, len(self.chunkHandleToReadCount))
+      oprot.writeMapBegin(TType.BYTE, TType.I64, len(self.chunkHandleToReadCount))
       for kiter7,viter8 in self.chunkHandleToReadCount.items():
-        oprot.writeI64(kiter7)
+        oprot.writeByte(kiter7)
         oprot.writeI64(viter8)
       oprot.writeMapEnd()
       oprot.writeFieldEnd()
@@ -292,7 +292,7 @@ class ChunkLocation:
 
   thrift_spec = (
     None, # 0
-    (1, TType.I64, 'chunkHandle', None, None, ), # 1
+    (1, TType.BYTE, 'chunkHandle', None, None, ), # 1
     (2, TType.STRING, 'chunkServerIP', None, None, ), # 2
     (3, TType.I32, 'chunkServerPort', None, None, ), # 3
   )
@@ -312,8 +312,8 @@ class ChunkLocation:
       if ftype == TType.STOP:
         break
       if fid == 1:
-        if ftype == TType.I64:
-          self.chunkHandle = iprot.readI64();
+        if ftype == TType.BYTE:
+          self.chunkHandle = iprot.readByte();
         else:
           iprot.skip(ftype)
       elif fid == 2:
@@ -337,8 +337,8 @@ class ChunkLocation:
       return
     oprot.writeStructBegin('ChunkLocation')
     if self.chunkHandle is not None:
-      oprot.writeFieldBegin('chunkHandle', TType.I64, 1)
-      oprot.writeI64(self.chunkHandle)
+      oprot.writeFieldBegin('chunkHandle', TType.BYTE, 1)
+      oprot.writeByte(self.chunkHandle)
       oprot.writeFieldEnd()
     if self.chunkServerIP is not None:
       oprot.writeFieldBegin('chunkServerIP', TType.STRING, 2)
@@ -375,7 +375,7 @@ class NewChunkServerRequest:
 
   thrift_spec = (
     None, # 0
-    (1, TType.MAP, 'fileNameToChunkHandles', (TType.STRING,None,TType.LIST,(TType.I64,None)), None, ), # 1
+    (1, TType.MAP, 'fileNameToChunkHandles', (TType.STRING,None,TType.LIST,(TType.BYTE,None)), None, ), # 1
   )
 
   def __init__(self, fileNameToChunkHandles=None,):
@@ -399,7 +399,7 @@ class NewChunkServerRequest:
             _val15 = []
             (_etype19, _size16) = iprot.readListBegin()
             for _i20 in xrange(_size16):
-              _elem21 = iprot.readI64();
+              _elem21 = iprot.readByte();
               _val15.append(_elem21)
             iprot.readListEnd()
             self.fileNameToChunkHandles[_key14] = _val15
@@ -421,9 +421,9 @@ class NewChunkServerRequest:
       oprot.writeMapBegin(TType.STRING, TType.LIST, len(self.fileNameToChunkHandles))
       for kiter22,viter23 in self.fileNameToChunkHandles.items():
         oprot.writeString(kiter22)
-        oprot.writeListBegin(TType.I64, len(viter23))
+        oprot.writeListBegin(TType.BYTE, len(viter23))
         for iter24 in viter23:
-          oprot.writeI64(iter24)
+          oprot.writeByte(iter24)
         oprot.writeListEnd()
       oprot.writeMapEnd()
       oprot.writeFieldEnd()
