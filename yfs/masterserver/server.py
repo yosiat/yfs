@@ -1,9 +1,3 @@
-from thrift.transport import TSocket
-from thrift.transport import TTransport
-from thrift.protocol import TBinaryProtocol
-from thrift.server import TServer
-
-from yfs.Protocol.MasterService import Processor
 from yfs.Protocol.ttypes import FileNotFoundException
 from yfs.masterserver import DEFAULT_CHUNK_SIZE_BYTES
 
@@ -63,14 +57,5 @@ class MasterServerHandler:
 
 
 
-class MasterServerFactory(object):
-    @staticmethod
-    def getServer():
-        handler = MasterServerHandler()
-        processor = Processor(handler)
-        transport = TSocket.TServerSocket(port=9090)
-        tfactory = TTransport.TBufferedTransportFactory()
-        pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
-        return TServer.TSimpleServer(processor, transport, tfactory, pfactory)
 
