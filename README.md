@@ -7,11 +7,12 @@ Yosi File System - Learning clone of Google File System
 Status](https://travis-ci.org/yosiat/morphues.png)](https://travis-ci.org/yosiat/morphues)
 
 
-## Steps
-1. Implement read of chunk locations while stubbing the chunk server
-    1. Chunk server: newChunkServer, heartbeat will be stubbed
-    2. Tests
-2. Create chunk server: newChunkServer method will be implemented, and
-   heartbeat will return empty response
-3. Chunk server will support the binary chunk read protocol
+## To Do
+1. Chunk server
+    1. call to master newChunkServer
+    2. support for read protocol
+2. Meta server support heartbeat
+3. Extract to configuration the default chunk size
+4. Service discovery - simple one, for dynamic master discovery
+5. File creation (will be filled in the future :))
 
