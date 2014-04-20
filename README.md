@@ -4,7 +4,7 @@ yfs
 Yosi File System - Learning clone of Google File System
 
 [![Build
-Status](https://travis-ci.org/yosiat/morphues.png)](https://travis-ci.org/yosiat/morphues)
+Status](https://travis-ci.org/yosiat/yfs.png)](https://travis-ci.org/yosiat/yfs)
 
 
 ## To Do
