@@ -1,5 +1,6 @@
 from random import randint
 import uuid
+from tests.helper import get_length_by_handles_count
 import yfs.masterserver
 from yfs.masterserver.metadata.Chunk import Chunk
 from yfs.masterserver.metadata.FileInfo import FileInfo
@@ -18,8 +19,7 @@ def test_exact_chunk_handles_conversion():
     assert expected_chunk_handles_count == chunk_handles_count
 
 
-def get_length_by_handles_count(length):
-    return (length * yfs.masterserver.DEFAULT_CHUNK_SIZE_BYTES) + randint(1, 100)
+
 
 
 def test_chunk_handles_conversion():
