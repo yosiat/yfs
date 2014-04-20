@@ -4,7 +4,7 @@ from tests.helper import get_length_by_handles_count
 from yfs.Protocol.ttypes import NewChunkServerRequest
 from yfs.masterserver.metadata.Chunk import Chunk
 from yfs.masterserver.metadata.FileInfo import FileInfo
-from yfs.masterserver.server import MasterServerHandler
+from yfs.masterserver.handler import MasterServerHandler
 
 
 def create_file(name, handles_count):

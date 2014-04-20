@@ -8,7 +8,7 @@ from random import randint
 from _pytest.python import raises
 from yfs.Protocol.ttypes import FileNotFoundException
 from yfs.masterserver.metadata.FileInfo import FileInfo
-from yfs.masterserver.server import MasterServerHandler
+from yfs.masterserver.handler import MasterServerHandler
 from tests.helper import get_length_by_handles_count
 
 def test_raise_FileNotFound_getChunkLocations():

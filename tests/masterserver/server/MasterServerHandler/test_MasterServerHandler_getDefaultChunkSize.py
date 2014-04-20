@@ -1,4 +1,4 @@
-from yfs.masterserver.server import MasterServerHandler
+from yfs.masterserver.handler import MasterServerHandler
 from yfs.masterserver import DEFAULT_CHUNK_SIZE_BYTES
 
 def test_getDefaultChunkSize():
