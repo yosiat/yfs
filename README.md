@@ -3,6 +3,9 @@ yfs
 
 Yosi File System - Learning clone of Google File System
 
+[![Build
+Status](https://travis-ci.org/yosiat/morphues.png)](https://travis-ci.org/yosiat/morphues)
+
 
 ## Steps
 1. Implement read of chunk locations while stubbing the chunk server
