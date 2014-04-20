@@ -111,6 +111,8 @@ class Client(Iface):
     self._iprot.readMessageEnd()
     if result.success is not None:
       return result.success
+    if result.fileNotFound is not None:
+      raise result.fileNotFound
     raise TApplicationException(TApplicationException.MISSING_RESULT, "getChunkLocations failed: unknown result");
 
   def getDefaultChunkSize(self):
@@ -178,7 +180,10 @@ class Processor(Iface, TProcessor):
     args.read(iprot)
     iprot.readMessageEnd()
     result = getChunkLocations_result()
-    result.success = self._handler.getChunkLocations(args.fileIdentifier, args.length, args.offset)
+    try:
+      result.success = self._handler.getChunkLocations(args.fileIdentifier, args.length, args.offset)
+    except FileNotFoundException, fileNotFound:
+      result.fileNotFound = fileNotFound
     oprot.writeMessageBegin("getChunkLocations", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
@@ -389,14 +394,17 @@ class getChunkLocations_result:
   """
   Attributes:
    - success
+   - fileNotFound
   """
 
   thrift_spec = (
     (0, TType.LIST, 'success', (TType.STRUCT,(ChunkLocation, ChunkLocation.thrift_spec)), None, ), # 0
+    (1, TType.STRUCT, 'fileNotFound', (FileNotFoundException, FileNotFoundException.thrift_spec), None, ), # 1
   )
 
-  def __init__(self, success=None,):
+  def __init__(self, success=None, fileNotFound=None,):
     self.success = success
+    self.fileNotFound = fileNotFound
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -418,6 +426,12 @@ class getChunkLocations_result:
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
+      elif fid == 1:
+        if ftype == TType.STRUCT:
+          self.fileNotFound = FileNotFoundException()
+          self.fileNotFound.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -434,6 +448,10 @@ class getChunkLocations_result:
       for iter31 in self.success:
         iter31.write(oprot)
       oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.fileNotFound is not None:
+      oprot.writeFieldBegin('fileNotFound', TType.STRUCT, 1)
+      self.fileNotFound.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()

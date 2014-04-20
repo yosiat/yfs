@@ -369,16 +369,22 @@ class ChunkLocation:
 class NewChunkServerRequest:
   """
   Attributes:
+   - chunkServerIP
+   - chunkServerPort
    - fileNameToChunkHandles: File name to chunks, for example:
   - yosy.txt - 1,3,4
   """
 
   thrift_spec = (
     None, # 0
-    (1, TType.MAP, 'fileNameToChunkHandles', (TType.STRING,None,TType.LIST,(TType.BYTE,None)), None, ), # 1
+    (1, TType.STRING, 'chunkServerIP', None, None, ), # 1
+    (2, TType.I32, 'chunkServerPort', None, None, ), # 2
+    (3, TType.MAP, 'fileNameToChunkHandles', (TType.STRING,None,TType.LIST,(TType.BYTE,None)), None, ), # 3
   )
 
-  def __init__(self, fileNameToChunkHandles=None,):
+  def __init__(self, chunkServerIP=None, chunkServerPort=None, fileNameToChunkHandles=None,):
+    self.chunkServerIP = chunkServerIP
+    self.chunkServerPort = chunkServerPort
     self.fileNameToChunkHandles = fileNameToChunkHandles
 
   def read(self, iprot):
@@ -391,6 +397,16 @@ class NewChunkServerRequest:
       if ftype == TType.STOP:
         break
       if fid == 1:
+        if ftype == TType.STRING:
+          self.chunkServerIP = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.I32:
+          self.chunkServerPort = iprot.readI32();
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
         if ftype == TType.MAP:
           self.fileNameToChunkHandles = {}
           (_ktype10, _vtype11, _size9 ) = iprot.readMapBegin()
@@ -416,8 +432,16 @@ class NewChunkServerRequest:
       oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
       return
     oprot.writeStructBegin('NewChunkServerRequest')
+    if self.chunkServerIP is not None:
+      oprot.writeFieldBegin('chunkServerIP', TType.STRING, 1)
+      oprot.writeString(self.chunkServerIP)
+      oprot.writeFieldEnd()
+    if self.chunkServerPort is not None:
+      oprot.writeFieldBegin('chunkServerPort', TType.I32, 2)
+      oprot.writeI32(self.chunkServerPort)
+      oprot.writeFieldEnd()
     if self.fileNameToChunkHandles is not None:
-      oprot.writeFieldBegin('fileNameToChunkHandles', TType.MAP, 1)
+      oprot.writeFieldBegin('fileNameToChunkHandles', TType.MAP, 3)
       oprot.writeMapBegin(TType.STRING, TType.LIST, len(self.fileNameToChunkHandles))
       for kiter22,viter23 in self.fileNameToChunkHandles.items():
         oprot.writeString(kiter22)
@@ -433,6 +457,69 @@ class NewChunkServerRequest:
   def validate(self):
     return
 
+
+  def __repr__(self):
+    L = ['%s=%r' % (key, value)
+      for key, value in self.__dict__.iteritems()]
+    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+  def __eq__(self, other):
+    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
+class FileNotFoundException(TException):
+  """
+  Attributes:
+   - fileIdentifier
+  """
+
+  thrift_spec = (
+    None, # 0
+    (1, TType.STRING, 'fileIdentifier', None, None, ), # 1
+  )
+
+  def __init__(self, fileIdentifier=None,):
+    self.fileIdentifier = fileIdentifier
+
+  def read(self, iprot):
+    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
+      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.fileIdentifier = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
+      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
+      return
+    oprot.writeStructBegin('FileNotFoundException')
+    if self.fileIdentifier is not None:
+      oprot.writeFieldBegin('fileIdentifier', TType.STRING, 1)
+      oprot.writeString(self.fileIdentifier)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def validate(self):
+    return
+
+
+  def __str__(self):
+    return repr(self)
 
   def __repr__(self):
     L = ['%s=%r' % (key, value)

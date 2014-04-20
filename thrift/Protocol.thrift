@@ -28,11 +28,17 @@ struct ChunkLocation {
 
 
 struct NewChunkServerRequest {
+  1: string chunkServerIP,
+  2: i32 chunkServerPort,
   /**
    * File name to chunks, for example: 
    * - yosy.txt - 1,3,4
    */
-  1: map<string, list<byte>> fileNameToChunkHandles 
+  3: map<string, list<byte>> fileNameToChunkHandles 
+}
+
+exception FileNotFoundException {
+  1: string fileIdentifier
 }
 
 service MasterService {
@@ -49,7 +55,8 @@ service MasterService {
    *  length - how much the client wants to read in bytes
    *  offset - from where to start in bytes
    */
-  list<ChunkLocation> getChunkLocations(1: string fileIdentifier, 2: i64 length, 3: i64 offset),
+  list<ChunkLocation> getChunkLocations(1: string fileIdentifier, 2: i64 length, 3: i64 offset)
+        throws (1: FileNotFoundException fileNotFound),
 
   /* 
    * Returns the default chunk size (64MB..)
