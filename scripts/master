@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+from yfs import DEFAULT_MASTER_SERVER_PORT, DEFAULT_MASTER_SERVER_HOST
+from yfs.utils.server_factory import ServerFactory
+
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+
+logging.info('Running master server - %s:%s' % (DEFAULT_MASTER_SERVER_HOST, DEFAULT_MASTER_SERVER_PORT))
+server = ServerFactory.create_master_server()
+
+server.serve()

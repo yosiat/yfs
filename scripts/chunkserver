@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+import logging
+
+from yfs import DEFAULT_CHUNK_SERVER_PORT
+from yfs.utils.server_factory import ServerFactory
+
+
+logging.basicConfig(level=logging.DEBUG)
+
+
+logging.info('Running chunk server - %s:%s' % ('localhost', DEFAULT_CHUNK_SERVER_PORT))
+server = ServerFactory.create_chunk_server()
+
+server.serve()
