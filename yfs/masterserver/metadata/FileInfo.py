@@ -4,7 +4,7 @@ from yfs.masterserver.metadata.Chunk import Chunk
 
 
 class FileInfo(object):
-    def __init__(self, name, length, chunks=list()):
+    def __init__(self, name, length, chunks=None):
         """
         name - file name
         length - the length of the file in bytes
