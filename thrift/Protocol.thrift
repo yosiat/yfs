@@ -59,9 +59,9 @@ service MasterService {
         throws (1: FileNotFoundException fileNotFound),
 
   /* 
-   * Returns the default chunk size (64MB..)
+   * Returns the default chunk size in bytes
    */
-  i32 getDefaultChunkSize()
+  i64 getDefaultChunkSize()
 }
 
 

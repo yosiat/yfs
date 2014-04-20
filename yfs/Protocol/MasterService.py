@@ -520,7 +520,7 @@ class getDefaultChunkSize_result:
   """
 
   thrift_spec = (
-    (0, TType.I32, 'success', None, None, ), # 0
+    (0, TType.I64, 'success', None, None, ), # 0
   )
 
   def __init__(self, success=None,):
@@ -536,8 +536,8 @@ class getDefaultChunkSize_result:
       if ftype == TType.STOP:
         break
       if fid == 0:
-        if ftype == TType.I32:
-          self.success = iprot.readI32();
+        if ftype == TType.I64:
+          self.success = iprot.readI64();
         else:
           iprot.skip(ftype)
       else:
@@ -551,8 +551,8 @@ class getDefaultChunkSize_result:
       return
     oprot.writeStructBegin('getDefaultChunkSize_result')
     if self.success is not None:
-      oprot.writeFieldBegin('success', TType.I32, 0)
-      oprot.writeI32(self.success)
+      oprot.writeFieldBegin('success', TType.I64, 0)
+      oprot.writeI64(self.success)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
